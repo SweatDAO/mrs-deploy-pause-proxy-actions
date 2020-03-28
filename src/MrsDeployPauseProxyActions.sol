@@ -1,4 +1,4 @@
-/// DssDeployPauseProxyActions.sol
+/// MrsDeployPauseProxyActions.sol
 
 // Copyright (C) 2018 Gonzalo Balabasquer <gbalabasquer@gmail.com>
 //
@@ -15,14 +15,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-pragma solidity ^0.5.12;
+pragma solidity ^0.5.15;
 
 contract PauseLike {
     function plot(address, bytes32, bytes memory, uint) public;
     function exec(address, bytes32, bytes memory, uint) public;
 }
 
-contract DssDeployPauseProxyActions {
+contract MrsDeployPauseProxyActions {
     function file(address pause, address actions, address who, bytes32 what, uint data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }

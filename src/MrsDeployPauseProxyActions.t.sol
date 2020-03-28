@@ -1,11 +1,11 @@
-pragma solidity ^0.5.12;
+pragma solidity ^0.5.15;
 
 import "ds-test/test.sol";
 
-import "./DssDeployPauseProxyActions.sol";
-import {DssDeployTestBase} from "dss-deploy/DssDeploy.t.base.sol";
-import {DSProxyFactory, DSProxy} from "ds-proxy/proxy.sol";
-import {PipLike} from "dss/spot.sol";
+import "./MrsDeployPauseProxyActions.sol";
+import {MrsDeployTestBase} from "mrs-deploy/MrsDeploy.t.base.sol";
+import {DSProxyFactory, DSProxy} from "mrs-deploy/ds/proxy/proxy.sol";
+import {PipLike} from "mrs/spot.sol";
 
 contract ProxyCalls {
     DSProxy proxy;
@@ -32,12 +32,12 @@ contract ProxyCalls {
     }
 }
 
-contract DssDeployPauseProxyActionsTest is DssDeployTestBase, ProxyCalls {
+contract MrsDeployPauseProxyActionsTest is MrsDeployTestBase, ProxyCalls {
     function setUp() public {
         super.setUp();
-        deploy();
+        deployStable();
         DSProxyFactory factory = new DSProxyFactory();
-        proxyActions = address(new DssDeployPauseProxyActions());
+        proxyActions = address(new MrsDeployPauseProxyActions());
         proxy = DSProxy(factory.build());
         authority.setRootUser(address(proxy), true);
     }
@@ -49,18 +49,18 @@ contract DssDeployPauseProxyActionsTest is DssDeployTestBase, ProxyCalls {
     }
 
     function testFile2() public {
-        (,,, uint line,) = vat.ilks("ETH");
+        (,,, uint line,,) = vat.ilks("ETH");
         assertEq(line, 10000 * 10 ** 45);
         this.file(address(pause), address(govActions), address(vat), bytes32("ETH"), bytes32("line"), uint(20000 * 10 ** 45));
-        (,,, line,) = vat.ilks("ETH");
+        (,,, line,,) = vat.ilks("ETH");
         assertEq(line, 20000 * 10 ** 45);
     }
 
     function testFile3() public {
-        (PipLike pip,) = spotter.ilks("ETH");
+        (PipLike pip,,) = spotter.ilks("ETH");
         assertEq(address(pip), address(pipETH));
         this.file(address(pause), address(govActions), address(spotter), bytes32("ETH"), bytes32("pip"), address(123));
-        (pip,) = spotter.ilks("ETH");
+        (pip,,) = spotter.ilks("ETH");
         assertEq(address(pip), address(123));
     }
 
@@ -79,9 +79,9 @@ contract DssDeployPauseProxyActionsTest is DssDeployTestBase, ProxyCalls {
     }
 
     function testDripAndFile2() public {
-        assertEq(pot.dsr(), 10 ** 27);
-        this.file(address(pause), address(govActions), address(pot), bytes32("dsr"), uint(2 * 10 ** 27));
-        assertEq(pot.dsr(), 2 * 10 ** 27);
+        assertEq(pot.sr(), 10 ** 27);
+        this.file(address(pause), address(govActions), address(pot), bytes32("sr"), uint(2 * 10 ** 27));
+        assertEq(pot.sr(), 2 * 10 ** 27);
     }
 
     function testSetAuthorityAndDelay() public {
