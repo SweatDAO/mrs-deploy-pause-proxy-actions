@@ -1,4 +1,4 @@
-/// MrsDeployPauseProxyActions.sol
+/// GebDeployPauseProxyActions.sol
 
 // Copyright (C) 2018 Gonzalo Balabasquer <gbalabasquer@gmail.com>
 //
@@ -22,105 +22,105 @@ contract PauseLike {
     function exec(address, bytes32, bytes memory, uint) public;
 }
 
-contract MrsDeployPauseProxyActions {
-    function file(address pause, address actions, address who, bytes32 what, uint data) external {
+contract GebDeployPauseProxyActions {
+    function modifyParameters(address pause, address actions, address who, bytes32 parameter, uint data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
         PauseLike(pause).plot(
             address(actions),
             tag,
-            abi.encodeWithSignature("file(address,bytes32,uint256)", who, what, data),
+            abi.encodeWithSignature("modifyParameters(address,bytes32,uint256)", who, parameter, data),
             now
         );
         PauseLike(pause).exec(
             address(actions),
             tag,
-            abi.encodeWithSignature("file(address,bytes32,uint256)", who, what, data),
+            abi.encodeWithSignature("modifyParameters(address,bytes32,uint256)", who, parameter, data),
             now
         );
     }
 
-    function file(address pause, address actions, address who, bytes32 ilk, bytes32 what, uint data) external {
+    function modifyParameters(address pause, address actions, address who, bytes32 collateralType, bytes32 parameter, uint data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
         PauseLike(pause).plot(
             address(actions),
             tag,
-            abi.encodeWithSignature("file(address,bytes32,bytes32,uint256)", who, ilk, what, data),
+            abi.encodeWithSignature("modifyParameters(address,bytes32,bytes32,uint256)", who, collateralType, parameter, data),
             now
         );
         PauseLike(pause).exec(
             address(actions),
             tag,
-            abi.encodeWithSignature("file(address,bytes32,bytes32,uint256)", who, ilk, what, data),
+            abi.encodeWithSignature("modifyParameters(address,bytes32,bytes32,uint256)", who, collateralType, parameter, data),
             now
         );
     }
 
-    function file(address pause, address actions, address who, bytes32 ilk, bytes32 what, address data) external {
+    function modifyParameters(address pause, address actions, address who, bytes32 collateralType, bytes32 parameter, address data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
         PauseLike(pause).plot(
             address(actions),
             tag,
-            abi.encodeWithSignature("file(address,bytes32,bytes32,address)", who, ilk, what, data),
+            abi.encodeWithSignature("modifyParameters(address,bytes32,bytes32,address)", who, collateralType, parameter, data),
             now
         );
         PauseLike(pause).exec(
             address(actions),
             tag,
-            abi.encodeWithSignature("file(address,bytes32,bytes32,address)", who, ilk, what, data),
+            abi.encodeWithSignature("modifyParameters(address,bytes32,bytes32,address)", who, collateralType, parameter, data),
             now
         );
     }
 
-    function rely(address pause, address actions, address who, address to) external {
+    function addAuthorization(address pause, address actions, address who, address to) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
         PauseLike(pause).plot(
             address(actions),
             tag,
-            abi.encodeWithSignature("rely(address,address)", who, to),
+            abi.encodeWithSignature("addAuthorization(address,address)", who, to),
             now
         );
         PauseLike(pause).exec(
             address(actions),
             tag,
-            abi.encodeWithSignature("rely(address,address)", who, to),
+            abi.encodeWithSignature("addAuthorization(address,address)", who, to),
             now
         );
     }
 
-    function dripAndFile(address pause, address actions, address who, bytes32 what, uint data) external {
+    function updateRateAndModifyParameters(address pause, address actions, address who, bytes32 parameter, uint data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
         PauseLike(pause).plot(
             address(actions),
             tag,
-            abi.encodeWithSignature("dripAndFile(address,bytes32,uint256)", who, what, data),
+            abi.encodeWithSignature("updateRateAndModifyParameters(address,bytes32,uint256)", who, parameter, data),
             now
         );
         PauseLike(pause).exec(
             address(actions),
             tag,
-            abi.encodeWithSignature("dripAndFile(address,bytes32,uint256)", who, what, data),
+            abi.encodeWithSignature("updateRateAndModifyParameters(address,bytes32,uint256)", who, parameter, data),
             now
         );
     }
 
-    function dripAndFile(address pause, address actions, address who, bytes32 ilk, bytes32 what, uint data) external {
+    function taxSingleAndModifyParameters(address pause, address actions, address who, bytes32 collateralType, bytes32 parameter, uint data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
         PauseLike(pause).plot(
             address(actions),
             tag,
-            abi.encodeWithSignature("dripAndFile(address,bytes32,bytes32,uint256)", who, ilk, what, data),
+            abi.encodeWithSignature("taxSingleAndModifyParameters(address,bytes32,bytes32,uint256)", who, collateralType, parameter, data),
             now
         );
         PauseLike(pause).exec(
             address(actions),
             tag,
-            abi.encodeWithSignature("dripAndFile(address,bytes32,bytes32,uint256)", who, ilk, what, data),
+            abi.encodeWithSignature("taxSingleAndModifyParameters(address,bytes32,bytes32,uint256)", who, collateralType, parameter, data),
             now
         );
     }
