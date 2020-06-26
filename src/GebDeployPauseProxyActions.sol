@@ -15,24 +15,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-pragma solidity ^0.5.15;
+pragma solidity ^0.6.7;
 
-contract PauseLike {
-    function plot(address, bytes32, bytes memory, uint) public;
-    function exec(address, bytes32, bytes memory, uint) public;
+abstract contract PauseLike {
+    function scheduleTransaction(address, bytes32, bytes memory, uint) virtual public;
+    function executeTransaction(address, bytes32, bytes memory, uint) virtual public;
 }
 
 contract GebDeployPauseProxyActions {
     function modifyParameters(address pause, address actions, address who, bytes32 parameter, uint data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
-        PauseLike(pause).plot(
+        PauseLike(pause).scheduleTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("modifyParameters(address,bytes32,uint256)", who, parameter, data),
             now
         );
-        PauseLike(pause).exec(
+        PauseLike(pause).executeTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("modifyParameters(address,bytes32,uint256)", who, parameter, data),
@@ -43,13 +43,13 @@ contract GebDeployPauseProxyActions {
     function modifyParameters(address pause, address actions, address who, bytes32 collateralType, bytes32 parameter, uint data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
-        PauseLike(pause).plot(
+        PauseLike(pause).scheduleTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("modifyParameters(address,bytes32,bytes32,uint256)", who, collateralType, parameter, data),
             now
         );
-        PauseLike(pause).exec(
+        PauseLike(pause).executeTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("modifyParameters(address,bytes32,bytes32,uint256)", who, collateralType, parameter, data),
@@ -60,13 +60,13 @@ contract GebDeployPauseProxyActions {
     function modifyParameters(address pause, address actions, address who, bytes32 collateralType, bytes32 parameter, address data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
-        PauseLike(pause).plot(
+        PauseLike(pause).scheduleTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("modifyParameters(address,bytes32,bytes32,address)", who, collateralType, parameter, data),
             now
         );
-        PauseLike(pause).exec(
+        PauseLike(pause).executeTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("modifyParameters(address,bytes32,bytes32,address)", who, collateralType, parameter, data),
@@ -77,13 +77,13 @@ contract GebDeployPauseProxyActions {
     function addAuthorization(address pause, address actions, address who, address to) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
-        PauseLike(pause).plot(
+        PauseLike(pause).scheduleTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("addAuthorization(address,address)", who, to),
             now
         );
-        PauseLike(pause).exec(
+        PauseLike(pause).executeTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("addAuthorization(address,address)", who, to),
@@ -94,13 +94,13 @@ contract GebDeployPauseProxyActions {
     function updateRateAndModifyParameters(address pause, address actions, address who, bytes32 parameter, uint data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
-        PauseLike(pause).plot(
+        PauseLike(pause).scheduleTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("updateRateAndModifyParameters(address,bytes32,uint256)", who, parameter, data),
             now
         );
-        PauseLike(pause).exec(
+        PauseLike(pause).executeTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("updateRateAndModifyParameters(address,bytes32,uint256)", who, parameter, data),
@@ -111,13 +111,13 @@ contract GebDeployPauseProxyActions {
     function taxSingleAndModifyParameters(address pause, address actions, address who, bytes32 collateralType, bytes32 parameter, uint data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
-        PauseLike(pause).plot(
+        PauseLike(pause).scheduleTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("taxSingleAndModifyParameters(address,bytes32,bytes32,uint256)", who, collateralType, parameter, data),
             now
         );
-        PauseLike(pause).exec(
+        PauseLike(pause).executeTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("taxSingleAndModifyParameters(address,bytes32,bytes32,uint256)", who, collateralType, parameter, data),
@@ -128,13 +128,13 @@ contract GebDeployPauseProxyActions {
     function setAuthorityAndDelay(address pause, address actions, address newAuthority, uint newDelay) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
-        PauseLike(pause).plot(
+        PauseLike(pause).scheduleTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("setAuthorityAndDelay(address,address,uint256)", pause, newAuthority, newDelay),
             now
         );
-        PauseLike(pause).exec(
+        PauseLike(pause).executeTransaction(
             address(actions),
             tag,
             abi.encodeWithSignature("setAuthorityAndDelay(address,address,uint256)", pause, newAuthority, newDelay),

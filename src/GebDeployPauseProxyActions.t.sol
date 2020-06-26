@@ -1,4 +1,4 @@
-pragma solidity ^0.5.15;
+pragma solidity ^0.6.7;
 
 import "ds-test/test.sol";
 
@@ -33,7 +33,7 @@ contract ProxyCalls {
 }
 
 contract GebDeployPauseProxyActionsTest is GebDeployTestBase, ProxyCalls {
-    function setUp() public {
+    function setUp() override public {
         super.setUp();
         deployStable();
         DSProxyFactory factory = new DSProxyFactory();
