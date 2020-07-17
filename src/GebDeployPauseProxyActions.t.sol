@@ -15,6 +15,10 @@ contract ProxyCalls {
         proxy.execute(proxyActions, msg.data);
     }
 
+    function modifyParameters(address, address, address, bytes32, address) public {
+        proxy.execute(proxyActions, msg.data);
+    }
+
     function modifyParameters(address, address, address, bytes32, bytes32, uint) public {
         proxy.execute(proxyActions, msg.data);
     }
@@ -62,6 +66,12 @@ contract GebDeployPauseProxyActionsTest is GebDeployTestBase, ProxyCalls {
         this.modifyParameters(address(pause), address(govActions), address(oracleRelayer), bytes32("ETH"), bytes32("orcl"), address(123));
         (orcl,,) = oracleRelayer.collateralTypes("ETH");
         assertEq(address(orcl), address(123));
+    }
+
+    function testModifyParameters4() public {
+        assertTrue(address(accountingEngine.protocolTokenAuthority()) == address(0));
+        this.modifyParameters(address(pause), address(govActions), address(accountingEngine), bytes32("protocolTokenAuthority"), address(123));
+        assertTrue(address(accountingEngine.protocolTokenAuthority()) == address(123));
     }
 
     function testRely() public {

@@ -40,6 +40,23 @@ contract GebDeployPauseProxyActions {
         );
     }
 
+    function modifyParameters(address pause, address actions, address who, bytes32 parameter, address data) external {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("modifyParameters(address,bytes32,address)", who, parameter, data),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("modifyParameters(address,bytes32,address)", who, parameter, data),
+            now
+        );
+    }
+
     function modifyParameters(address pause, address actions, address who, bytes32 collateralType, bytes32 parameter, uint data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
