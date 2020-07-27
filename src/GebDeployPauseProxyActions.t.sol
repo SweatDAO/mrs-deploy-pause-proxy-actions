@@ -37,9 +37,11 @@ contract ProxyCalls {
 }
 
 contract GebDeployPauseProxyActionsTest is GebDeployTestBase, ProxyCalls {
+    bytes32 collateralAuctionType = bytes32("ENGLISH");
+
     function setUp() override public {
         super.setUp();
-        deployStable();
+        deployStable(collateralAuctionType);
         DSProxyFactory factory = new DSProxyFactory();
         proxyActions = address(new GebDeployPauseProxyActions());
         proxy = DSProxy(factory.build());
