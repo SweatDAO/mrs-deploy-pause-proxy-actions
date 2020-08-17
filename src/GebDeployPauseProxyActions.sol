@@ -108,19 +108,19 @@ contract GebDeployPauseProxyActions {
         );
     }
 
-    function updateRedemptionPriceAndModifyParameters(address pause, address actions, address who, bytes32 parameter, uint data) external {
+    function updateRedemptionRate(address pause, address actions, address who, bytes32 parameter, uint data) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
         PauseLike(pause).scheduleTransaction(
             address(actions),
             tag,
-            abi.encodeWithSignature("updateRedemptionPriceAndModifyParameters(address,bytes32,uint256)", who, parameter, data),
+            abi.encodeWithSignature("updateRedemptionRate(address,bytes32,uint256)", who, parameter, data),
             now
         );
         PauseLike(pause).executeTransaction(
             address(actions),
             tag,
-            abi.encodeWithSignature("updateRedemptionPriceAndModifyParameters(address,bytes32,uint256)", who, parameter, data),
+            abi.encodeWithSignature("updateRedemptionRate(address,bytes32,uint256)", who, parameter, data),
             now
         );
     }

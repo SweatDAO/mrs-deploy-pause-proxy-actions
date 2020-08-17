@@ -82,6 +82,13 @@ contract GebDeployPauseProxyActionsTest is GebDeployTestBase, ProxyCalls {
         assertEq(oracleRelayer.authorizedAccounts(address(123)), 1);
     }
 
+    function updateRedemptionRate() public {
+        hevm.warp(now + 1);
+        assertTrue(oracleRelayer.redemptionPriceUpdateTime() < now);
+        this.updateRedemptionRate(address(pause), address(govActions), address(oracleRelayer), bytes32("redemptionRate"), 10 ** 27 + 1);
+        assertEq(oracleRelayer.redemptionPriceUpdateTime(), now);
+    }
+
     function testUpdateAccumulatedRateAndModifyParameters() public {
         (uint stabilityFee,) = taxCollector.collateralTypes("ETH");
         assertEq(stabilityFee, 10 ** 27);
