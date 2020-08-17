@@ -34,6 +34,10 @@ contract ProxyCalls {
     function setAuthorityAndDelay(address, address, address, uint) public {
         proxy.execute(proxyActions, msg.data);
     }
+
+    function updateRedemptionRate(address, address, address, bytes32, uint256) public {
+        proxy.execute(proxyActions, msg.data);
+    }
 }
 
 contract GebDeployPauseProxyActionsTest is GebDeployTestBase, ProxyCalls {
@@ -82,7 +86,7 @@ contract GebDeployPauseProxyActionsTest is GebDeployTestBase, ProxyCalls {
         assertEq(oracleRelayer.authorizedAccounts(address(123)), 1);
     }
 
-    function updateRedemptionRate() public {
+    function testUpdateRedemptionRate() public {
         hevm.warp(now + 1);
         assertTrue(oracleRelayer.redemptionPriceUpdateTime() < now);
         this.updateRedemptionRate(address(pause), address(govActions), address(oracleRelayer), bytes32("redemptionRate"), 10 ** 27 + 1);
