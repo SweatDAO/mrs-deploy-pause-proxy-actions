@@ -3,7 +3,7 @@ pragma solidity ^0.6.7;
 import "ds-test/test.sol";
 
 import "./GebDeployPauseProxyActions.sol";
-import {GebDeployTestBase} from "geb-deploy/GebDeploy.t.base.sol";
+import {GebDeployTestBase} from "geb-deploy/test/GebDeploy.t.base.sol";
 import {DSProxyFactory, DSProxy} from "ds-proxy/proxy.sol";
 import {OracleLike} from "geb/OracleRelayer.sol";
 
