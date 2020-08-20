@@ -53,16 +53,16 @@ contract GebDeployPauseProxyActionsTest is GebDeployTestBase, ProxyCalls {
     }
 
     function testmodifyParameters() public {
-        assertEq(cdpEngine.globalDebtCeiling(), 10000 * 10 ** 45);
-        this.modifyParameters(address(pause), address(govActions), address(cdpEngine), bytes32("globalDebtCeiling"), uint(20000 * 10 ** 45));
-        assertEq(cdpEngine.globalDebtCeiling(), 20000 * 10 ** 45);
+        assertEq(safeEngine.globalDebtCeiling(), 10000 * 10 ** 45);
+        this.modifyParameters(address(pause), address(govActions), address(safeEngine), bytes32("globalDebtCeiling"), uint(20000 * 10 ** 45));
+        assertEq(safeEngine.globalDebtCeiling(), 20000 * 10 ** 45);
     }
 
     function testModifyParameters2() public {
-        (,,, uint debtCeiling,,) = cdpEngine.collateralTypes("ETH");
+        (,,, uint debtCeiling,,) = safeEngine.collateralTypes("ETH");
         assertEq(debtCeiling, 10000 * 10 ** 45);
-        this.modifyParameters(address(pause), address(govActions), address(cdpEngine), bytes32("ETH"), bytes32("debtCeiling"), uint(20000 * 10 ** 45));
-        (,,, debtCeiling,,) = cdpEngine.collateralTypes("ETH");
+        this.modifyParameters(address(pause), address(govActions), address(safeEngine), bytes32("ETH"), bytes32("debtCeiling"), uint(20000 * 10 ** 45));
+        (,,, debtCeiling,,) = safeEngine.collateralTypes("ETH");
         assertEq(debtCeiling, 20000 * 10 ** 45);
     }
 
