@@ -91,6 +91,40 @@ contract GebDeployPauseProxyActions {
         );
     }
 
+    function modifyParameters(address pause, address actions, address who, bytes32 collateralType, uint data1, uint data2) external {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("modifyParameters(address,bytes32,uint256,uint256)", who, collateralType, data1, data2),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("modifyParameters(address,bytes32,uint256,uint256)", who, collateralType, data1, data2),
+            now
+        );
+    }
+
+    function modifyParameters(address pause, address actions, address who, bytes32 collateralType, uint data1, uint data2, address data3) external {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("modifyParameters(address,bytes32,uint256,uint256,address)", who, collateralType, data1, data2, data3),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("modifyParameters(address,bytes32,uint256,uint256,address)", who, collateralType, data1, data2, data3),
+            now
+        );
+    }
+
     function addAuthorization(address pause, address actions, address who, address to) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }

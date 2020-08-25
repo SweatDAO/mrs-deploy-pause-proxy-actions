@@ -27,6 +27,14 @@ contract ProxyCalls {
         proxy.execute(proxyActions, msg.data);
     }
 
+    function modifyParameters(address, address, address, bytes32, uint256, uint256, address) public {
+        proxy.execute(proxyActions, msg.data);
+    }
+
+    function modifyParameters(address, address, address, bytes32, uint256, uint256) public {
+        proxy.execute(proxyActions, msg.data);
+    }
+
     function addAuthorization(address, address, address, address) public {
         proxy.execute(proxyActions, msg.data);
     }
@@ -78,6 +86,22 @@ contract GebDeployPauseProxyActionsTest is GebDeployTestBase, ProxyCalls {
         assertTrue(address(accountingEngine.protocolTokenAuthority()) == address(0));
         this.modifyParameters(address(pause), address(govActions), address(accountingEngine), bytes32("protocolTokenAuthority"), address(123));
         assertTrue(address(accountingEngine.protocolTokenAuthority()) == address(123));
+    }
+
+    function testModifyParameters5And6() public {
+        assertTrue(!taxCollector.isSecondaryReceiver(1));
+        assertEq(taxCollector.maxSecondaryReceivers(), 0);
+        this.modifyParameters(address(pause), address(govActions), address(taxCollector), bytes32("maxSecondaryReceivers"), 2);
+        assertEq(taxCollector.maxSecondaryReceivers(), 2);
+        this.modifyParameters(address(pause), address(govActions), address(taxCollector), bytes32("ETH"), 100, 10 ** 27, address(this));
+        (uint canTakeBackTax, uint taxPercentage) = taxCollector.secondaryTaxReceivers(bytes32("ETH"), 1);
+        assertEq(canTakeBackTax, 0);
+        assertEq(taxPercentage, 10 ** 27);
+        assertTrue(taxCollector.isSecondaryReceiver(1));
+        this.modifyParameters(address(pause), address(govActions), address(taxCollector), bytes32("ETH"), 1, 1);
+        (canTakeBackTax, taxPercentage) = taxCollector.secondaryTaxReceivers(bytes32("ETH"), 1);
+        assertEq(canTakeBackTax, 1);
+        assertEq(taxPercentage, 10 ** 27);
     }
 
     function testRely() public {
