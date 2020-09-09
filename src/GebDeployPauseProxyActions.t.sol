@@ -35,6 +35,45 @@ contract ProxyCalls {
         proxy.execute(proxyActions, msg.data);
     }
 
+    function modifyTwoParameters(
+      address,
+      address,
+      address,
+      address,
+      bytes32,
+      bytes32,
+      bytes32,
+      bytes32,
+      uint,
+      uint
+    ) public {
+      proxy.execute(proxyActions, msg.data);
+    }
+
+    function modifyTwoParameters(
+      address,
+      address,
+      address,
+      address,
+      bytes32,
+      bytes32,
+      uint,
+      uint
+    ) public {
+      proxy.execute(proxyActions, msg.data);
+    }
+
+    function removeAuthorizationAndModify(
+      address,
+      address,
+      address,
+      address,
+      bytes32,
+      uint
+    ) public {
+      proxy.execute(proxyActions, msg.data);
+    }
+
     function addAuthorization(address, address, address, address) public {
         proxy.execute(proxyActions, msg.data);
     }
@@ -103,6 +142,27 @@ contract GebDeployPauseProxyActionsTest is GebDeployTestBase, ProxyCalls {
         assertEq(canTakeBackTax, 1);
         assertEq(taxPercentage, 10 ** 27);
     }
+
+    function testModifyTwoParameters1() public {
+        (,,, uint debtCeiling, uint debtFloor,) = safeEngine.collateralTypes("ETH");
+        assertEq(debtCeiling, 10000 * 10 ** 45);
+        assertEq(debtFloor, 0);
+        this.modifyTwoParameters(address(pause), address(govActions), address(safeEngine), address(safeEngine), bytes32("ETH"), bytes32("ETH"), bytes32("debtCeiling"), bytes32("debtFloor"), uint(20000 * 10 ** 45), uint(10));
+        (,,, debtCeiling, debtFloor,) = safeEngine.collateralTypes("ETH");
+        assertEq(debtCeiling, 20000 * 10 ** 45);
+        assertEq(debtFloor, 10);
+    }
+
+    function testModifyTwoParameters2() public {
+        assertEq(safeEngine.globalDebtCeiling(), 10000 * 10 ** 45);
+        assertEq(accountingEngine.surplusAuctionAmountToSell(), 0);
+        this.modifyTwoParameters(address(pause), address(govActions), address(safeEngine), address(accountingEngine), bytes32("globalDebtCeiling"), bytes32("surplusAuctionAmountToSell"), uint(20000 * 10 ** 45), uint(10));
+        assertEq(safeEngine.globalDebtCeiling(), 20000 * 10 ** 45);
+        assertEq(accountingEngine.surplusAuctionAmountToSell(), 10);
+    }
+
+    // TODO
+    function testRemoveAuthorizationAndModify() public {}
 
     function testRely() public {
         assertEq(oracleRelayer.authorizedAccounts(address(123)), 0);

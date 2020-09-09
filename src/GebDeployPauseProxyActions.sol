@@ -142,13 +142,13 @@ contract GebDeployPauseProxyActions {
         PauseLike(pause).scheduleTransaction(
             address(actions),
             tag,
-            abi.encodeWithSignature("modifyParameters(address,address,bytes32,bytes32,bytes32,bytes32,uint256,uint256)", who1, who2, collateralType1, collateralType2, parameter1, parameter2, data1, data2),
+            abi.encodeWithSignature("modifyTwoParameters(address,address,bytes32,bytes32,bytes32,bytes32,uint256,uint256)", who1, who2, collateralType1, collateralType2, parameter1, parameter2, data1, data2),
             now
         );
         PauseLike(pause).executeTransaction(
             address(actions),
             tag,
-            abi.encodeWithSignature("modifyParameters(address,address,bytes32,bytes32,bytes32,bytes32,uint256,uint256)", who1, who2, collateralType1, collateralType2, parameter1, parameter2, data1, data2),
+            abi.encodeWithSignature("modifyTwoParameters(address,address,bytes32,bytes32,bytes32,bytes32,uint256,uint256)", who1, who2, collateralType1, collateralType2, parameter1, parameter2, data1, data2),
             now
         );
     }
@@ -168,13 +168,13 @@ contract GebDeployPauseProxyActions {
         PauseLike(pause).scheduleTransaction(
             address(actions),
             tag,
-            abi.encodeWithSignature("modifyParameters(address,address,bytes32,bytes32,uint256,uint256)", who1, who2, parameter1, parameter2, data1, data2),
+            abi.encodeWithSignature("modifyTwoParameters(address,address,bytes32,bytes32,uint256,uint256)", who1, who2, parameter1, parameter2, data1, data2),
             now
         );
         PauseLike(pause).executeTransaction(
             address(actions),
             tag,
-            abi.encodeWithSignature("modifyParameters(address,address,bytes32,bytes32,uint256,uint256)", who1, who2, parameter1, parameter2, data1, data2),
+            abi.encodeWithSignature("modifyTwoParameters(address,address,bytes32,bytes32,uint256,uint256)", who1, who2, parameter1, parameter2, data1, data2),
             now
         );
     }
