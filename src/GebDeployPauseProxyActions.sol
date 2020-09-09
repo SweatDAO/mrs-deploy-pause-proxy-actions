@@ -125,6 +125,84 @@ contract GebDeployPauseProxyActions {
         );
     }
 
+    function modifyTwoParameters(
+      address pause,
+      address actions,
+      address who1,
+      address who2,
+      bytes32 collateralType1,
+      bytes32 collateralType2,
+      bytes32 parameter1,
+      bytes32 parameter2,
+      uint data1,
+      uint data2
+    ) external {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("modifyParameters(address,address,bytes32,bytes32,bytes32,bytes32,uint256,uint256)", who1, who2, collateralType1, collateralType2, parameter1, parameter2, data1, data2),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("modifyParameters(address,address,bytes32,bytes32,bytes32,bytes32,uint256,uint256)", who1, who2, collateralType1, collateralType2, parameter1, parameter2, data1, data2),
+            now
+        );
+    }
+
+    function modifyTwoParameters(
+      address pause,
+      address actions,
+      address who1,
+      address who2,
+      bytes32 parameter1,
+      bytes32 parameter2,
+      uint data1,
+      uint data2
+    ) external {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("modifyParameters(address,address,bytes32,bytes32,uint256,uint256)", who1, who2, parameter1, parameter2, data1, data2),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("modifyParameters(address,address,bytes32,bytes32,uint256,uint256)", who1, who2, parameter1, parameter2, data1, data2),
+            now
+        );
+    }
+
+    function removeAuthorizationAndModify(
+      address pause,
+      address actions,
+      address who,
+      address to,
+      bytes32 parameter,
+      uint data
+    ) public {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("removeAuthorizationAndModify(address,address,bytes32,uint256)", who, to, parameter, data),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("removeAuthorizationAndModify(address,address,bytes32,uint256)", who, to, parameter, data),
+            now
+        );
+    }
+
     function addAuthorization(address pause, address actions, address who, address to) external {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
