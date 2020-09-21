@@ -287,4 +287,106 @@ contract GebDeployPauseProxyActions {
             now
         );
     }
+
+    function shutdownSystem(address pause, address actions, address globalSettlement) public {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("shutdownSystem(address)", globalSettlement),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("shutdownSystem(address)", globalSettlement),
+            now
+        );
+    }
+
+    function setProtester(address pause, address actions, address protester) public {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setProtester(address,address)", pause, protester),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setProtester(address,address)", pause, protester),
+            now
+        );
+    }
+
+    function setDelay(address pause, address actions, uint newDelay) public {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setDelay(address,uint256)", pause, newDelay),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setDelay(address,uint256)", pause, newDelay),
+            now
+        );
+    }
+
+    function setDelayMultiplier(address pause, address actions, uint delayMultiplier) public {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setDelayMultiplier(address,uint256)", pause, delayMultiplier),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setDelayMultiplier(address,uint256)", pause, delayMultiplier),
+            now
+        );
+    }
+
+    function setAllowance(address pause, address actions, address join, address account, uint allowance) public {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setAllowance(address,address,uint256)", join, account, allowance),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setAllowance(address,address,uint256)", join, account, allowance),
+            now
+        );
+    }
+
+    function multiSetAllowance(address pause, address actions, address join, address[] memory accounts, uint[] memory allowances) public {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("multiSetAllowance(address,address[],uint256[])", join, accounts, allowances),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("multiSetAllowance(address,address[],uint256[])", join, accounts, allowances),
+            now
+        );
+    }
 }
