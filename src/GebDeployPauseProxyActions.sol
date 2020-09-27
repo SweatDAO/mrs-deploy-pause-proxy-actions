@@ -356,6 +356,40 @@ contract GebDeployPauseProxyActions {
         );
     }
 
+    function setTotalAllowance(address pause, address actions, address who, address account, uint rad) public {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setTotalAllowance(address,address,uint256)", who, account, rad),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setTotalAllowance(address,address,uint256)", who, account, rad),
+            now
+        );
+    }
+
+    function setPerBlockAllowance(address pause, address actions, address who, address account, uint rad) public {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setPerBlockAllowance(address,address,uint256)", who, account, rad),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setPerBlockAllowance(address,address,uint256)", who, account, rad),
+            now
+        );
+    }
+
     function setAllowance(address pause, address actions, address join, address account, uint allowance) public {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }
