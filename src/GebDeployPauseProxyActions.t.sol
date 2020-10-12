@@ -202,8 +202,8 @@ contract GebDeployPauseProxyActionsTest is GebDeployTestBase, ProxyCalls {
 
     function testSetAllowance() public {
         uint allowance = 25 * 10 ** 45;
-        assertEq(colJoin.allowance(address(1)), 0);
-        this.setAllowance(address(pause), address(govActions), address(colJoin), address(1), allowance);
-        assertEq(colJoin.allowance(address(1)), allowance);
+        assertEq(col6Join.allowance(address(1)), 0);
+        this.setAllowance(address(pause), address(govActions), address(col6Join), address(1), allowance);
+        assertEq(col6Join.allowance(address(1)), allowance);
     }
 }
