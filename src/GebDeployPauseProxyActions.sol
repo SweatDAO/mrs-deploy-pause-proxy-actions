@@ -227,6 +227,23 @@ contract GebDeployPauseProxyActions {
         );
     }
 
+    function setOwner(address pause, address actions, address owner) public {
+        bytes32 tag;
+        assembly { tag := extcodehash(actions) }
+        PauseLike(pause).scheduleTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setOwner(address,address)", pause, owner),
+            now
+        );
+        PauseLike(pause).executeTransaction(
+            address(actions),
+            tag,
+            abi.encodeWithSignature("setOwner(address,address)", pause, owner),
+            now
+        );
+    }
+
     function setDelay(address pause, address actions, uint newDelay) public {
         bytes32 tag;
         assembly { tag := extcodehash(actions) }

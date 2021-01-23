@@ -51,6 +51,10 @@ contract ProxyCalls {
         proxy.execute(proxyActions, msg.data);
     }
 
+    function setOwner(address pause, address actions, address owner) public {
+        proxy.execute(proxyActions, msg.data);
+    }
+
     function setDelay(address pause, address actions, uint newDelay) public {
         proxy.execute(proxyActions, msg.data);
     }
@@ -168,6 +172,12 @@ contract GebDeployPauseProxyActionsTest is GebDeployTestBase, ProxyCalls {
         assertEq(address(pause.protester()), address(0));
         this.setProtester(address(pause), address(govActions), address(124));
         assertEq(address(pause.protester()), address(124));
+    }
+
+    function testSetOwner() public {
+        assertEq(address(pause.owner()), address(0));
+        this.setOwner(address(pause), address(govActions), address(124));
+        assertEq(address(pause.owner()), address(124));
     }
 
     function testSetDelay() public {
